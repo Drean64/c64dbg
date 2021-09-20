@@ -1,8 +1,2 @@
 github.com/Drean64/cpu6502 v0.1.1 h1:0SUWoGuKlrKLbEztoOSTY58SvCDB4OfzigJHktctJNg=
 github.com/Drean64/cpu6502 v0.1.1/go.mod h1:QCOsgS7bHPkoloXe5F/SnKR2JLh7VH9OFJkC4+QceRo=
-github.com/buger/goterm v1.0.2 h1:i8B4JkwcswgmC2pn2PnyRqxaSxTeC2y3z5Ys7yNZD0c=
-github.com/buger/goterm v1.0.2/go.mod h1:HiFWV3xnkolgrBV3mY8m0X0Pumt4zg4QhbdOzQtB8tE=
-github.com/veandco/go-sdl2 v0.4.10 h1:8QoD2bhWl7SbQDflIAUYWfl9Vq+mT8/boJFAUzAScgY=
-github.com/veandco/go-sdl2 v0.4.10/go.mod h1:OROqMhHD43nT4/i9crJukyVecjPNYYuCofep6SNiAjY=
-golang.org/x/sys v0.0.0-20210331175145-43e1dd70ce54 h1:rF3Ohx8DRyl8h2zw9qojyLHLhrJpEMgyPOImREEryf0=
-golang.org/x/sys v0.0.0-20210331175145-43e1dd70ce54/go.mod h1:h1NjWce9XRLGQEsW7wpKNCjG9DtNlClVuFLEZdDNbEs=
