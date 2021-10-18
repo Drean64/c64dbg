@@ -7,6 +7,9 @@
 			"source.organizeImports": true
 		}
 	},
+	"[javascript]": {
+		"editor.formatOnSave": true,
+	},
 	"gopls": {
 		"completeUnimported": true
 	}
