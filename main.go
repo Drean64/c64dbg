@@ -1,6 +1,7 @@
 package main
 
 import (
+	"encoding/json"
 	"fmt"
 	"mime/multipart"
 	"net/http"
@@ -56,11 +57,20 @@ func sendState(c64 *c64.C64, res Res) {
 
 	multi := multipart.NewWriter(res)
 	defer multi.Close()
+
 	res.Header().Set("Content-type", multi.FormDataContentType())
+	cpu, _ := multi.CreatePart(textproto.MIMEHeader{"Content-Type": []string{"application/json"}, "Content-Disposition": []string{`form-data; name="CPU"`}})
+	cpuJson, err := json.Marshal(c64.CPU)
+	if err != nil {
+		res.Header().Set("Content-type", "text/plain")
+		res.WriteHeader(http.StatusBadRequest)
+		res.Write([]byte(err.Error()))
+		return
+	}
+
+	cpu.Write(cpuJson)
 	ram, _ := multi.CreatePart(fileHeader("RAM"))
 	ram.Write(c64.RAM[:])
 	io, _ := multi.CreatePart(fileHeader("IO"))
 	io.Write(c64.IO[:])
 }
-
-//Content-Disposition: form-data; name="fieldName"
