@@ -12,6 +12,7 @@ import (
 
 type Res = http.ResponseWriter
 type Req = http.Request
+type Headers = textproto.MIMEHeader
 
 func main() {
 
@@ -22,20 +23,15 @@ func main() {
 	// go com64.Run(commands, play)
 
 	http.HandleFunc("/", func(res Res, req *Req) {
-		fmt.Printf("[%s]\n", req.URL.Path)
 		res.Header().Add("Cache-Control", "No-Store, Max-Age=0")
 
 		if req.URL.Path == "/" {
-			http.ServeFile(res, req, "./web/index.html")
+			http.ServeFile(res, req, "../web/index.html")
 		} else if req.URL.Path == "/index.js" {
-			http.ServeFile(res, req, "./web/index.js")
+			http.ServeFile(res, req, "../web/index.js")
 		} else {
 			res.WriteHeader(http.StatusNotFound)
 		}
-	})
-
-	http.HandleFunc("/guistart", func(w Res, r *Req) {
-		//
 	})
 
 	http.HandleFunc("/state", func(res Res, _ *Req) {
@@ -49,17 +45,11 @@ func main() {
 }
 
 func sendState(c64 *c64.C64, res Res) {
-	fileHeader := func(name string) textproto.MIMEHeader {
-		return textproto.MIMEHeader{
-			"Content-Type":        []string{"application/octet-stream"},
-			"Content-Disposition": []string{fmt.Sprintf(`form-data; name="%s"; filename="%s"`, name, name)}}
-	}
-
 	multi := multipart.NewWriter(res)
 	defer multi.Close()
 
 	res.Header().Set("Content-type", multi.FormDataContentType())
-	cpu, _ := multi.CreatePart(textproto.MIMEHeader{"Content-Type": []string{"application/json"}, "Content-Disposition": []string{`form-data; name="CPU"`}})
+	cpu, _ := multi.CreatePart(Headers{"Content-Type": []string{"application/json"}, "Content-Disposition": []string{`form-data; name="CPU"`}})
 	cpuJson, err := json.Marshal(c64.CPU)
 	if err != nil {
 		res.Header().Set("Content-type", "text/plain")
@@ -69,8 +59,8 @@ func sendState(c64 *c64.C64, res Res) {
 	}
 
 	cpu.Write(cpuJson)
-	ram, _ := multi.CreatePart(fileHeader("RAM"))
+	ram, _ := multi.CreatePart(Headers{"Content-Type": []string{"application/octet-stream"}, "Content-Disposition": []string{`form-data; name="RAM"; filename="RAM"`}})
 	ram.Write(c64.RAM[:])
-	io, _ := multi.CreatePart(fileHeader("IO"))
+	io, _ := multi.CreatePart(Headers{"Content-Type": []string{"application/octet-stream"}, "Content-Disposition": []string{`form-data; name="IO"; filename="IO"`}})
 	io.Write(c64.IO[:])
 }

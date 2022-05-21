@@ -24,9 +24,4 @@ async function fetchState() {
 document.addEventListener('DOMContentLoaded', async () => {
 	console.log("DOMContentLoaded");
 	fetchState();
-	// const state = await fetch(SERVER + "/state");
-	// const formData = await state.formData();
-	// formData.forEach((value, key) => {
-	// 	//
-	// });
 });
